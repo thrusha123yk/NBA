@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3>Student Report</h3>
+
+<form method="POST">
+<input type="text" name="usn" class="form-control"
+placeholder="Enter USN" required>
+<button class="btn btn-warning mt-2">Generate Report</button>
+</form>
+
+{% if summary %}
+<div class="alert alert-info mt-4">
+{{ summary }}
+</div>
+{% endif %}
+
+{% endblock %}

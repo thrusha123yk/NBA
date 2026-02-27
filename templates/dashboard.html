@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3>Teacher Dashboard</h3>
+<canvas id="myChart"></canvas>
+<form method="GET" class="row g-2 mb-3">
+<div class="col">
+<input type="number" name="year" class="form-control" placeholder="Filter by Year">
+</div>
+<div class="col">
+<select name="event" class="form-select">
+<option value="">Filter by Event</option>
+<option>Hackathon</option>
+<option>Workshop</option>
+<option>Internship</option>
+<option>Certification</option>
+<option>Conference</option>
+</select>
+</div>
+<div class="col">
+<button class="btn btn-primary">Apply</button>
+</div>
+</form>
+
+<table class="table table-bordered table-striped">
+<tr>
+<th>Name</th>
+<th>USN</th>
+<th>Event</th>
+<th>Level</th>
+<th>Year</th>
+<th>Prize</th>
+<th>Action</th>
+</tr>
+
+{% for row in data %}
+<tr>
+<td>{{ row['name'] }}</td>
+<td>{{ row['usn'] }}</td>
+<td>{{ row['event_type'] }}</td>
+<td>{{ row['level'] }}</td>
+<td>{{ row['year'] }}</td>
+<td>{{ row['prize'] }}</td>
+<td>
+<a href="/edit/{{row['id']}}" class="btn btn-sm btn-warning">Edit</a>
+<a href="/delete/{{row['id']}}" class="btn btn-sm btn-danger">Delete</a>
+</td>
+</tr>
+{% endfor %}
+</table>
+
+<canvas id="chart"></canvas>
+
+<script>
+const labels = {{ event_count.keys()|list|tojson }};
+const values = {{ event_count.values()|list|tojson }};
+
+if(labels.length>0){
+new Chart(document.getElementById('chart'), {
+type:'bar',
+data:{
+labels:labels,
+datasets:[{
+label:'Event Count',
+data:values,
+backgroundColor:['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF']
+}]
+},
+options:{
+scales:{
+y:{
+beginAtZero:true,
+ticks:{precision:0}
+}
+}
+}
+});
+}
+</script>
+
+<script>
+const labels = {{ event_count.keys()|list|tojson }};
+const values = {{ event_count.values()|list|tojson }};
+
+if (labels.length > 0) {
+    new Chart(document.getElementById('myChart'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Event Count',
+                data: values,
+                backgroundColor: [
+                    '#007bff',
+                    '#28a745',
+                    '#ffc107',
+                    '#dc3545'
+                ]
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            }
+        }
+    });
+}
+</script>
+{% endblock %}
